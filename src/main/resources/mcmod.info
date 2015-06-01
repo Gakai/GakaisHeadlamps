@@ -1,0 +1,16 @@
+[
+{
+  "modid": "GakaisHeadlamps",
+  "name": "Gakai's Headlamps",
+  "description": "It dawns on me",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Gakai","olee"],
+  "credits": "AtomicStryker for providing DynamicLights Core",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["DynamicLights"]
+}
+]
