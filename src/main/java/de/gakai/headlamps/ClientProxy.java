@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import atomicstryker.dynamiclights.client.DynamicLights;
-import atomicstryker.dynamiclights.client.IDynamicLightSource;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -17,76 +14,45 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 public class ClientProxy extends CommonProxy
 {
 
-	private static final class PlayerLightSource implements IDynamicLightSource
-	{
-		private final EntityPlayer player;
-		public int lightLevel;
+    private static final Map<EntityPlayer, HeadlampLightSource> headlampPlayers = new HashMap();
 
-		private PlayerLightSource(EntityPlayer player)
-		{
-			this.player = player;
-		}
+    @Override
+    public void init()
+    {
+        FMLCommonHandler.instance().bus().register(this);
+    }
 
-		@Override
-		public int getLightLevel()
-		{
-			return lightLevel;
-		}
+    @SubscribeEvent
+    public void clientTickEvent(TickEvent.ClientTickEvent event)
+    {
+        if (Minecraft.getMinecraft().theWorld == null || event.phase == Phase.END)
+            return;
 
-		@Override
-		public Entity getAttachmentEntity()
-		{
-			return player;
-		}
-	}
+        for (Object obj : Minecraft.getMinecraft().theWorld.loadedEntityList)
+        {
+            if (!(obj instanceof EntityPlayer))
+                continue;
+            EntityPlayer player = (EntityPlayer) obj;
+            ItemStack stack = player.getCurrentArmor(3);
+            if (stack != null && stack.getItem() instanceof HeadlampItem)
+            {
+                HeadlampLightSource lightSource = headlampPlayers.get(player);
+                int lightLevel = ((HeadlampItem) stack.getItem()).getLightLevel();
+                if (lightSource == null)
+                {
+                    lightSource = new HeadlampLightSource(player, lightLevel);
+                    headlampPlayers.put(player, lightSource);
+                }
+                lightSource.setLightLevel(lightLevel);
+                lightSource.updatePosition();
+            }
+            else
+            {
+                HeadlampLightSource lightSource = headlampPlayers.remove(player);
+                if (lightSource != null)
+                    lightSource.remove();
+            }
+        }
+    }
 
-	private static final Map<EntityPlayer, PlayerLightSource> headlampPlayers = new HashMap();
-
-	@Override
-	public void init()
-	{
-		FMLCommonHandler.instance().bus().register(this);
-	}
-
-	@SubscribeEvent
-	public void clientTickEvent(TickEvent.ClientTickEvent event)
-	{
-
-		if (Minecraft.getMinecraft().theWorld == null)
-			return;
-
-		if (event.phase == Phase.END)
-			return;
-
-		for (Object obj : Minecraft.getMinecraft().theWorld.loadedEntityList)
-		{
-			if (!(obj instanceof EntityPlayer))
-			{
-				continue;
-			}
-
-			EntityPlayer player = (EntityPlayer) obj;
-			ItemStack stack = player.getCurrentArmor(3);
-			if (stack != null && stack.getItem() instanceof HeadlampItem)
-			{
-				PlayerLightSource ls = headlampPlayers.get(player);
-				if (ls == null)
-				{
-					ls = new PlayerLightSource(player);
-					DynamicLights.addLightSource(ls);
-					headlampPlayers.put(player, ls);
-				}
-				ls.lightLevel = ((HeadlampItem) stack.getItem()).getLightLevel();
-			}
-			else
-			{
-				IDynamicLightSource lightSource = headlampPlayers.remove(player);
-				if (lightSource != null)
-				{
-					DynamicLights.removeLightSource(lightSource);
-				}
-			}
-		}
-
-	}
 }

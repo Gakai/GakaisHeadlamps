@@ -1,6 +1,7 @@
 package de.gakai.headlamps;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -14,80 +15,95 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class HeadlampItem extends ItemArmor
 {
 
-	public HeadlampItem(ArmorMaterial material)
-	{
-		super(material, getArmorType(material), 0);
-		setUnlocalizedName(HeadlampMod.MODID + ".headlamp" + StringUtils.capitalize(getMaterialName()));
-		setTextureName(getMaterialName() + "_helmet");
-		setCreativeTab(CreativeTabs.tabCombat);
-		if (material == ArmorMaterial.GOLD)
-			setTextureName("gold_helmet");
-	}
+    private String itemName;
 
-	private static int getArmorType(ArmorMaterial material)
-	{
-		switch (material)
-		{
-		case CHAIN:
-			return 1;
-		case GOLD:
-			return 4;
-		case DIAMOND:
-			return 3;
-		case IRON:
-			return 2;
-		default:
-			throw new RuntimeException("Unknown headlamp material");
-		}
-	}
+    private String materialName;
 
-	private String getMaterialName()
-	{
-		switch (getArmorMaterial())
-		{
-		case CHAIN:
-			return "chainmail";
-		case GOLD:
-			return "golden";
-		case DIAMOND:
-			return "diamond";
-		case IRON:
-			return "iron";
-		default:
-			throw new RuntimeException("Unknown headlamp material");
-		}
-	}
+    private String textureName;
 
-	public void registerRecipe(Item helmet)
-	{
-		GameRegistry.registerItem(this, getMaterialName() + "_headlamp");
+    public HeadlampItem(ArmorMaterial material)
+    {
+        super(material, getArmorType(material), 0);
+        materialName = getMaterialName();
+        itemName = materialName + "_headlamp";
+        textureName = HeadlampMod.MODID + ":textures/models/armor/" + itemName + ".png";
 
-		ItemStack headlampStack = new ItemStack(this);
-		ItemStack diamondStack = new ItemStack(Items.diamond);
-		ItemStack helmetStack = new ItemStack(helmet);
-		ItemStack glowstoneStack = new ItemStack(Blocks.glowstone);
+        setUnlocalizedName(HeadlampMod.MODID + ".headlamp" + StringUtils.capitalize(materialName));
+        setTextureName(HeadlampMod.MODID + ":" + itemName);
+        setCreativeTab(CreativeTabs.tabCombat);
+    }
 
-		GameRegistry.addRecipe(headlampStack, //
-		        "DGH", //
-		        'D', diamondStack, //
-		        'H', helmetStack, //
-		        'G', glowstoneStack);
-	}
+    void registerRecipe(Item helmet)
+    {
+        GameRegistry.registerItem(this, materialName + "_headlamp");
 
-	public int getLightLevel()
-	{
-		switch (getArmorMaterial())
-		{
-		case CHAIN:
-			return 13;
-		case GOLD:
-			return 14;
-		case DIAMOND:
-			return 15;
-		case IRON:
-			return 13;
-		default:
-			throw new RuntimeException("Unknown headlamp material");
-		}
-	}
+        ItemStack headlampStack = new ItemStack(this);
+        ItemStack diamondStack = new ItemStack(Items.diamond);
+        ItemStack helmetStack = new ItemStack(helmet);
+        ItemStack glowstoneStack = new ItemStack(Blocks.glowstone);
+
+        GameRegistry.addRecipe(headlampStack, //
+                "DGH", //
+                'D', diamondStack, //
+                'H', helmetStack, //
+                'G', glowstoneStack);
+    }
+
+    private static int getArmorType(ArmorMaterial material)
+    {
+        switch (material)
+        {
+        case CHAIN:
+            return 1;
+        case GOLD:
+            return 4;
+        case DIAMOND:
+            return 3;
+        case IRON:
+            return 2;
+        default:
+            throw new RuntimeException("Unknown headlamp material");
+        }
+    }
+
+    private String getMaterialName()
+    {
+        switch (getArmorMaterial())
+        {
+        case CHAIN:
+            return "chainmail";
+        case GOLD:
+            return "golden";
+        case DIAMOND:
+            return "diamond";
+        case IRON:
+            return "iron";
+        default:
+            throw new RuntimeException("Unknown headlamp material");
+        }
+    }
+
+    public int getLightLevel()
+    {
+        switch (getArmorMaterial())
+        {
+        case CHAIN:
+            return 10;
+        case GOLD:
+            return 13;
+        case DIAMOND:
+            return 15;
+        case IRON:
+            return 10;
+        default:
+            throw new RuntimeException("Unknown headlamp material");
+        }
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    {
+        return textureName;
+    }
+
 }
