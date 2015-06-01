@@ -35,7 +35,7 @@ public class HeadlampItem extends ItemArmor
 
     void registerRecipe(Item helmet)
     {
-        GameRegistry.registerItem(this, materialName + "_headlamp");
+        GameRegistry.registerItem(this, itemName);
 
         ItemStack headlampStack = new ItemStack(this);
         ItemStack diamondStack = new ItemStack(Items.diamond);
@@ -62,7 +62,7 @@ public class HeadlampItem extends ItemArmor
         case IRON:
             return 2;
         default:
-            throw new RuntimeException("Unknown headlamp material");
+            throw new RuntimeException("Unknown armor type");
         }
     }
 
