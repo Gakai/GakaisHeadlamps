@@ -1,0 +1,3 @@
+[submodule "atomicstrykers-minecraft-mods"]
+	path = atomicstrykers-minecraft-mods
+	url = https://github.com/AtomicStryker/atomicstrykers-minecraft-mods.git

@@ -1,0 +1,3 @@
+include ':DynamicLights'
+
+project(":DynamicLights").projectDir = new File(rootDir, "atomicstrykers-minecraft-mods/DynamicLights")
