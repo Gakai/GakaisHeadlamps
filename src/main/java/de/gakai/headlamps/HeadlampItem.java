@@ -7,10 +7,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.commons.lang3.StringUtils;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class HeadlampItem extends ItemArmor
 {
@@ -29,7 +28,6 @@ public class HeadlampItem extends ItemArmor
         textureName = HeadlampMod.MODID + ":textures/models/armor/" + itemName + ".png";
 
         setUnlocalizedName(HeadlampMod.MODID + ".headlamp" + StringUtils.capitalize(materialName));
-        setTextureName(HeadlampMod.MODID + ":" + itemName);
         setCreativeTab(CreativeTabs.tabCombat);
     }
 

@@ -2,10 +2,10 @@ package de.gakai.headlamps;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 @Mod(modid = HeadlampMod.MODID, version = HeadlampMod.VERSION, dependencies = "required-after:DynamicLights")
 public class HeadlampMod
