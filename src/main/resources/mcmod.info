@@ -8,9 +8,10 @@
   "url": "",
   "updateUrl": "",
   "authorList": ["Gakai","olee"],
-  "credits": "AtomicStryker for providing DynamicLights Core",
+  "credits": "AtomicStryker for DynamicLights",
   "logoFile": "",
   "screenshots": [],
+  "requiredMods": ["DynamicLights"],
   "dependencies": ["DynamicLights"]
 }
 ]
